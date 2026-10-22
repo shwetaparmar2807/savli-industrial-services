@@ -1,9 +1,3 @@
-<?php
-session_start();
-if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); }
-header('X-Content-Type-Options: nosniff');
-header('Referrer-Policy: strict-origin-when-cross-origin');
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -268,15 +262,13 @@ footer{background:#07130e;border-top:1px solid #142019;padding:18px 0;color:#8d9
 
 <section id="contact" style="padding:55px 0;background:#06110c" aria-labelledby="contact-heading">
   <div class="container contact-grid">
-   <div><div class="eyebrow">START YOUR PROJECT</div><h2 id="contact-heading" style="font-size:30px;margin:8px 0">Let's build something that works better.</h2><p style="color:#b8c4bd;font-size:13px;line-height:1.7;margin-bottom:20px">Tell us what you need and our team can get back to you about your project.</p><p style="margin:12px 0"><a class="quote-btn" href="tel:+918128502373">Call for a Quote →</a></p><p style="margin:12px 0"><a class="outline-btn" href="https://wa.me/918128502373" aria-label="Contact Savli Industrial Services on WhatsApp">Message us on WhatsApp</a></p></div>
-   <form class="enquiry-form" action="submit-enquiry.php" method="post">
-    <input type="hidden" name="csrf_token" value="">
-    <div class="hp-field" aria-hidden="true"><label for="website">Leave this field empty</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+   <div><div class="eyebrow">START YOUR PROJECT</div><h2 id="contact-heading" style="font-size:30px;margin:8px 0">Let's build something that works better.</h2><p style="color:#b8c4bd;font-size:13px;line-height:1.7;margin-bottom:20px">Tell us what you need and our team can get back to you about your project.</p><p style="margin:12px 0"><a class="quote-btn" href="tel:+918128502373">Call for a Quote →</a></p><p style="margin:12px 0"><a class="outline-btn" href="https://wa.me/918128502373" aria-label="Contact Savli Industrial Services on WhatsApp">Message us on WhatsApp</a></p><p style="margin:12px 0"><a class="outline-btn" href="mailto:savliindustrialservices@gmail.com">Email us</a></p></div>
+   <form class="enquiry-form" id="enquiry-form">
     <label for="name">Your name <span aria-hidden="true">*</span></label><input id="name" name="name" required maxlength="100" autocomplete="name">
     <label for="phone">Phone number <span aria-hidden="true">*</span></label><input id="phone" name="phone" required maxlength="20" inputmode="tel" autocomplete="tel">
     <label for="email">Email (optional)</label><input id="email" name="email" type="email" maxlength="190" autocomplete="email">
     <label for="service">Service required</label><select id="service" name="service"><option value="">Choose a service</option><option>Aluminium & Glass</option><option>Plumbing</option><option>Electrical</option><option>Civil Work</option><option>Interior Designing</option><option>Fabrication</option><option>ACP & Cladding</option><option>Maintenance</option><option>Painting & POP</option><option>Other</option></select>
-    <label for="message">Project details <span aria-hidden="true">*</span></label><textarea id="message" name="message" required maxlength="3000" rows="4"></textarea><button class="quote-btn form-submit" type="submit">Send Enquiry →</button><p class="form-note">Your details will be used only to respond to this enquiry.</p>
+    <label for="message">Project details <span aria-hidden="true">*</span></label><textarea id="message" name="message" required maxlength="3000" rows="4"></textarea><button class="quote-btn form-submit" type="submit">Send Enquiry →</button><p class="form-note">Submitting this form opens WhatsApp with your enquiry details. Please review the message and press Send in WhatsApp. This static website does not store submissions in a database.</p>
    </form>
   </div>
  </section>
@@ -290,5 +282,37 @@ footer{background:#07130e;border-top:1px solid #142019;padding:18px 0;color:#8d9
  </div>
 </footer>
 <a class="whatsapp" href="https://wa.me/918128502373" aria-label="WhatsApp">◔</a>
+
+<script>
+(() => {
+  const form = document.getElementById('enquiry-form');
+  if (!form) return;
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const service = document.getElementById('service').value || 'Not specified';
+    const message = document.getElementById('message').value.trim();
+
+    const enquiry = [
+      'Hello Savli Industrial Services, I would like to make an enquiry.',
+      '',
+      'Name: ' + name,
+      'Phone: ' + phone,
+      'Email: ' + (email || 'Not provided'),
+      'Service required: ' + service,
+      'Project details: ' + message
+    ].join('\n');
+
+    const whatsappUrl = 'https://wa.me/918128502373?text=' + encodeURIComponent(enquiry);
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+  });
+})();
+</script>
+
 </body>
 </html>
