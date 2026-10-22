@@ -1,0 +1,294 @@
+<?php
+session_start();
+if (empty($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); }
+header('X-Content-Type-Options: nosniff');
+header('Referrer-Policy: strict-origin-when-cross-origin');
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Savli Industrial Services | Professional Building & Industrial Solutions</title>
+<meta name="description" content="Savli Industrial Services - Aluminium & Glass, Plumbing, Electrical, Civil, Interior, Fabrication, ACP, Maintenance and Painting services.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#62d24b;
+  --green2:#2e9d3a;
+  --deep:#031b12;
+  --black:#050807;
+  --card:#f8faf8;
+  --muted:#89928d;
+  --line:rgba(255,255,255,.12);
+  --shadow:0 18px 45px rgba(0,0,0,.30);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Poppins,Arial,sans-serif;background:#050706;color:#fff;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.container{width:min(1280px,92%);margin:auto}
+.topbar{
+  height:28px;background:#082018;border-bottom:1px solid rgba(255,255,255,.06);
+  display:flex;justify-content:space-between;align-items:center;padding:0 4%;
+  font-size:10px;color:#cbd5d0;letter-spacing:.3px
+}
+.topbar .brandline{color:#e9efec}
+.topbar .brandline span{color:var(--green);margin-right:7px}
+nav{
+  height:64px;background:rgba(3,5,4,.94);backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:space-between;padding:0 8%;
+  position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.05)
+}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-mark{
+  width:48px;height:48px;border:2px solid #283b31;border-radius:50%;
+  display:grid;place-items:center;color:var(--green);font-size:12px;font-weight:800;line-height:.85;text-align:center
+}
+.logo strong{font-size:14px;letter-spacing:.2px}
+.logo small{display:block;color:#6e7873;font-size:7px;letter-spacing:1.2px;margin-top:3px}
+.navlinks{display:flex;gap:35px;font-size:12px;color:#aeb7b2}
+.navlinks a{transition:.2s}
+.navlinks a:hover,.navlinks a.active{color:var(--green)}
+.quote-btn,.outline-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;border-radius:9px;
+  padding:12px 24px;font-size:11px;font-weight:700;transition:.25s
+}
+.quote-btn{background:var(--green);color:#07120a}
+.quote-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(98,210,75,.28)}
+.outline-btn{border:1px solid white;color:white}
+.outline-btn:hover{background:white;color:#07120a}
+.hero{
+  min-height:500px;position:relative;display:flex;align-items:center;
+  background:
+    linear-gradient(90deg,rgba(2,26,17,.98) 0%,rgba(2,34,22,.92) 37%,rgba(0,0,0,.15) 72%),
+    url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1800&q=85") center/cover;
+}
+.hero:after{content:"";position:absolute;inset:auto 0 0;height:90px;background:linear-gradient(transparent,#050706)}
+.hero-content{position:relative;z-index:2;width:min(650px,90%);padding:75px 0 120px}
+.badge{display:inline-block;padding:7px 15px;border-radius:20px;background:rgba(80,190,72,.18);border:1px solid rgba(98,210,75,.25);color:#d7e9d5;font-size:10px;font-weight:700;letter-spacing:.5px;margin-bottom:18px}
+.badge:before{content:"";display:inline-block;width:7px;height:7px;background:var(--green);border-radius:50%;margin-right:7px}
+h1{font-size:52px;line-height:1.02;font-weight:800;letter-spacing:-1.8px}
+h1 span{color:var(--green)}
+.hero p{max-width:580px;color:#e0e6e3;font-size:13px;line-height:1.7;margin:17px 0 24px}
+.hero-actions{display:flex;gap:18px}
+.stats{
+  position:relative;z-index:5;margin-top:-50px;background:#fafcfb;color:#12201a;border-radius:13px;
+  box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(4,1fr);overflow:hidden
+}
+.stat{min-height:72px;display:flex;align-items:center;justify-content:center;gap:13px;border-right:1px solid #dce3df}
+.stat:last-child{border:0}
+.stat-icon{color:var(--green2);font-size:26px;font-weight:800}
+.stat strong{display:block;font-size:18px}
+.stat small{display:block;color:#67716b;font-size:10px}
+.about{padding:65px 0 55px;background:linear-gradient(180deg,#07100c,#101612)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:45px;align-items:center}
+.about-img{
+  height:280px;border-radius:14px;background:
+  linear-gradient(90deg,rgba(0,0,0,.12),rgba(0,0,0,.08)),
+  url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1000&q=85") center/cover;
+  position:relative;overflow:hidden
+}
+.about-img .floating{position:absolute;left:30px;bottom:18px;background:#fff;color:#18201c;border-radius:10px;padding:14px 20px;width:330px;box-shadow:0 12px 25px #0004}
+.floating strong{display:block;font-size:13px}.floating small{font-size:9px;color:#65716b}
+.eyebrow{font-size:9px;color:var(--green);font-weight:700;letter-spacing:1px}
+.about h2,.section-title h2{font-size:27px;line-height:1.15;margin:8px 0 12px}
+.about h2 span{color:#d9e2de}
+.about-copy{color:#89948e;font-size:11px;line-height:1.7}
+.checks{margin-top:15px;display:grid;gap:8px}
+.check{font-size:10px;color:#bec8c3}.check b{color:var(--green);margin-right:7px}
+.services{padding:20px 0 35px;background:#030504}
+.services-grid{display:grid;grid-template-columns:330px 1fr;gap:45px;align-items:start}
+.section-title p{font-size:10px;color:#68736d;line-height:1.7;max-width:260px}
+.service-list{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.service{
+  min-height:72px;background:#f5f7f6;border-radius:7px;color:#152019;padding:12px 15px;
+  display:flex;gap:12px;align-items:flex-start;transition:.25s
+}
+.service:hover{transform:translateY(-3px);box-shadow:0 12px 25px #0005}
+.service .ico{min-width:36px;height:36px;border-radius:50%;background:#e1f2df;color:#29983b;display:grid;place-items:center;font-weight:800}
+.service h3{font-size:10px;margin-bottom:3px}.service p{font-size:7.5px;color:#68716c;line-height:1.45}
+.work{padding:15px 0 55px;background:#030504}
+.work-grid{display:grid;grid-template-columns:330px 1fr;gap:45px}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.work-card{height:88px;border-radius:6px;overflow:hidden;position:relative;background-size:cover;background-position:center}
+.work-card:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(0,0,0,.88))}
+.work-card div{position:absolute;z-index:2;bottom:9px;left:12px}.work-card strong{display:block;font-size:9px}.work-card small{font-size:7px;color:#d1d7d3}
+.process{padding:35px 0 20px;background:linear-gradient(#101512,#050706)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);margin-top:18px;background:#0b100e;border:1px solid #171e1a;border-radius:7px;overflow:hidden}
+.step{padding:14px 20px;border-right:1px solid #1c251f}.step:last-child{border:0}.step b{color:#5fbf4b;font-size:11px;margin-right:8px}.step strong{font-size:9px}.step p{font-size:7px;color:#68736d;margin:4px 0 0 28px}
+footer{background:#07130e;border-top:1px solid #142019;padding:18px 0;color:#8d9892;font-size:9px}
+.footer{display:flex;align-items:center;justify-content:space-between}.social{display:flex;gap:10px}.social span{width:24px;height:24px;border:1px solid #33413a;border-radius:50%;display:grid;place-items:center}
+.whatsapp{position:fixed;right:22px;bottom:20px;width:42px;height:42px;border-radius:50%;background:#28c766;display:grid;place-items:center;z-index:200;box-shadow:0 7px 20px #0008;font-weight:800}
+@media(max-width:900px){
+ nav{padding:0 4%}.navlinks{display:none}
+ h1{font-size:42px}.hero-content{padding-left:4%}
+ .stats{grid-template-columns:repeat(2,1fr);margin:0 4%;margin-top:-35px}
+ .stat{border-bottom:1px solid #dce3df}
+ .about-grid,.services-grid,.work-grid{grid-template-columns:1fr}
+ .services-grid,.work-grid{gap:25px}.service-list{grid-template-columns:repeat(2,1fr)}
+ .gallery{grid-template-columns:repeat(2,1fr)}
+ .steps{grid-template-columns:repeat(2,1fr)}
+ .step:nth-child(2){border-right:0}.step{border-bottom:1px solid #1c251f}
+}
+@media(max-width:560px){
+ .topbar{font-size:8px}.topbar .gst{display:none}
+ nav{height:58px}.logo-mark{width:40px;height:40px}.logo strong{font-size:11px}
+ .quote-btn{padding:10px 13px;font-size:9px}
+ h1{font-size:35px}.hero{min-height:560px}.hero-content{padding-top:70px}
+ .hero p{font-size:11px}.hero-actions{flex-direction:column;width:180px}
+ .stats{grid-template-columns:1fr;margin-top:-20px}.stat{border-right:0}
+ .service-list,.gallery,.steps{grid-template-columns:1fr}
+ .about-img{height:250px}.about-img .floating{width:calc(100% - 30px);left:15px}
+ .footer{flex-direction:column;gap:12px;text-align:center}
+}
+
+.skip-link{position:absolute;left:-9999px;top:8px;background:#fff;color:#000;padding:12px;z-index:1000}
+.skip-link:focus{left:8px}
+:focus-visible{outline:3px solid #62d24b;outline-offset:3px}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
+.enquiry-form{display:grid;gap:9px;text-align:left;background:#0c1b13;border:1px solid #263b2d;border-radius:12px;padding:22px}
+.enquiry-form label{font-size:13px;color:#eef4ef;font-weight:600;margin-top:5px}
+.enquiry-form input,.enquiry-form select,.enquiry-form textarea{width:100%;border:1px solid #53665a;background:#f8faf8;color:#101812;border-radius:6px;padding:12px;font:inherit;font-size:14px;min-height:44px}
+.enquiry-form textarea{resize:vertical}
+.form-submit{border:0;cursor:pointer;font:inherit;font-weight:700;margin-top:8px;min-height:46px}
+.form-note{font-size:11px;color:#b8c4bd;line-height:1.6}
+.hp-field{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+@media(max-width:700px){.contact-grid{grid-template-columns:1fr}.enquiry-form{padding:16px}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<div class="topbar">
+  <div class="brandline"><span>◉</span> Professional Building & Industrial Solutions</div>
+  <div>⌖ Vadodara, Gujarat &nbsp;&nbsp; | &nbsp;&nbsp; GST: 24BKTPR883C1ZL</div>
+</div>
+
+<nav aria-label="Main navigation">
+  <a class="logo" href="#home">
+    <div class="logo-mark">SIS</div>
+    <div><strong>Savli Industrial Services</strong><small>INDUSTRIAL · CONSTRUCTION · INTERIORS</small></div>
+  </a>
+  <div class="navlinks">
+    <a class="active" href="#home">Home</a><a href="#about">About</a><a href="#services">Services</a>
+    <a href="#work">Work</a><a href="#projects">Projects</a><a href="#contact">Contact</a>
+  </div>
+  <a class="quote-btn" href="#contact">Get Quote →</a>
+</nav>
+
+<main id="main-content">
+<section id="home" aria-label="Home">
+<section class="hero">
+  <div class="container hero-content">
+    <div class="badge">TRUSTED SERVICE. PRACTICAL SOLUTIONS.</div>
+    <h1>We build spaces that<br><span>work better.</span></h1>
+    <p>From aluminium & glass fabrication to plumbing, electrical, civil, interior and maintenance work — Savli Industrial Services brings multiple solutions under one roof.</p>
+    <div class="hero-actions">
+      <a class="quote-btn" href="#contact">Request a Quote →</a>
+      <a class="outline-btn" href="#services">Explore Services</a>
+    </div>
+  </div>
+</section>
+</section>
+
+<div class="container stats">
+  <div class="stat"><div class="stat-icon">⚙</div><div><strong>360°</strong><small>Project Solutions</small></div></div>
+  <div class="stat"><div class="stat-icon">⌕</div><div><strong>9+</strong><small>Service Categories</small></div></div>
+  <div class="stat"><div class="stat-icon">◆</div><div><strong>GST</strong><small>Registered Business</small></div></div>
+  <div class="stat"><div class="stat-icon">●</div><div><strong>Vadodara</strong><small>Gujarat, India</small></div></div>
+</div>
+
+<section class="about" id="about">
+ <div class="container about-grid">
+   <div class="about-img">
+     <div class="floating"><strong>Built for homes, businesses & industries.</strong><small>One team for fabrication, finishing, installation and maintenance requirements.</small></div>
+   </div>
+   <div>
+    <div class="eyebrow">ABOUT SAVLI</div>
+    <h2>One partner for the work<br><span>your space needs.</span></h2>
+    <p class="about-copy">Savli Industrial Services provides practical, professional services for residential, commercial and industrial requirements around Savli and Vadodara.</p>
+    <div class="checks">
+      <div class="check"><b>✓</b>Quality-focused workmanship</div>
+      <div class="check"><b>✓</b>Multiple services under one roof</div>
+      <div class="check"><b>✓</b>Clear communication & quotation</div>
+      <div class="check"><b>✓</b>Solutions tailored to your project</div>
+    </div>
+   </div>
+ </div>
+</section>
+
+<section class="services" id="services">
+ <div class="container services-grid">
+  <div class="section-title"><div class="eyebrow">WHAT WE DO</div><h2>Services designed around<br>your project.</h2><p>Choose one service or combine multiple trades for a complete project solution.</p></div>
+  <div class="service-list">
+   <div class="service"><div class="ico">▣</div><div><h3>Aluminium & Glass</h3><p>Aluminium windows, doors, fabrication, partitions and glass solutions.</p></div></div>
+   <div class="service"><div class="ico">⌁</div><div><h3>Plumbing</h3><p>Plumbing installation, repair, hardware solutions and maintenance.</p></div></div>
+   <div class="service"><div class="ico">ϟ</div><div><h3>Electrical</h3><p>Electrical installation, fittings, repairs and practical maintenance support.</p></div></div>
+   <div class="service"><div class="ico">⌂</div><div><h3>Civil Work</h3><p>Building, renovation, structural and finishing work with quality and safety.</p></div></div>
+   <div class="service"><div class="ico">⌂</div><div><h3>Interior Designing</h3><p>Functional and modern interiors for homes, offices and commercial spaces.</p></div></div>
+   <div class="service"><div class="ico">▦</div><div><h3>Fabrication</h3><p>Custom fabrication work for industrial and commercial requirements.</p></div></div>
+   <div class="service"><div class="ico">◇</div><div><h3>ACP & Cladding</h3><p>ACP sheet installation, elevation and exterior cladding solutions.</p></div></div>
+   <div class="service"><div class="ico">↗</div><div><h3>Maintenance</h3><p>Regular maintenance, repair and support for long-term performance.</p></div></div>
+   <div class="service"><div class="ico">◒</div><div><h3>Painting & POP</h3><p>Interior & exterior painting, POP work and finishing solutions.</p></div></div>
+  </div>
+ </div>
+</section>
+
+<section class="work" id="work">
+ <div class="container work-grid">
+  <div class="section-title"><div class="eyebrow">OUR WORK</div><h2>Quality work in<br>every detail.</h2><p>A glimpse of our projects and services across different sectors.</p></div>
+  <div class="gallery">
+   <div class="work-card" style="background-image:url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=900&q=80')"><div><strong>Aluminium & Glass</strong><small>Modern Elevations</small></div></div>
+   <div class="work-card" style="background-image:url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80')"><div><strong>Interior Work</strong><small>Stylish & Functional</small></div></div>
+   <div class="work-card" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=80')"><div><strong>Plumbing Work</strong><small>Reliable Solutions</small></div></div>
+   <div class="work-card" style="background-image:url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=900&q=80')"><div><strong>Electrical Work</strong><small>Safe & Efficient</small></div></div>
+   <div class="work-card" style="background-image:url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=900&q=80')"><div><strong>Construction Work</strong><small>Strong Foundations</small></div></div>
+   <div class="work-card" style="background-image:url('https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80')"><div><strong>Commercial Buildings</strong><small>Aluminium & Glass</small></div></div>
+   <div class="work-card" style="background-image:url('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&q=80')"><div><strong>Renovation</strong><small>Civil & Maintenance</small></div></div>
+   <div class="work-card" style="background-image:url('https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=900&q=80')"><div><strong>Industrial Units</strong><small>Fabrication & Installation</small></div></div>
+   <div class="work-card" style="background-image:url('https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=900&q=80')"><div><strong>Custom Project</strong><small>Tailored Solutions</small></div></div>
+  </div>
+ </div>
+</section>
+
+<section class="process" id="projects">
+ <div class="container">
+  <div class="section-title"><div class="eyebrow">OUR PROCESS</div><h2>Simple steps. Great results.</h2><p>We make the process clear and transparent, from enquiry to completion.</p></div>
+  <div class="steps">
+   <div class="step"><b>01</b><strong>Discuss</strong><p>Understand requirements and site needs.</p></div>
+   <div class="step"><b>02</b><strong>Plan</strong><p>Prepare scope, materials and quotation.</p></div>
+   <div class="step"><b>03</b><strong>Execute</strong><p>Professional work with quality checks.</p></div>
+   <div class="step"><b>04</b><strong>Deliver</strong><p>Complete the project and support after work.</p></div>
+  </div>
+ </div>
+</section>
+
+<section id="contact" style="padding:55px 0;background:#06110c" aria-labelledby="contact-heading">
+  <div class="container contact-grid">
+   <div><div class="eyebrow">START YOUR PROJECT</div><h2 id="contact-heading" style="font-size:30px;margin:8px 0">Let's build something that works better.</h2><p style="color:#b8c4bd;font-size:13px;line-height:1.7;margin-bottom:20px">Tell us what you need and our team can get back to you about your project.</p><p style="margin:12px 0"><a class="quote-btn" href="tel:+918128502373">Call for a Quote →</a></p><p style="margin:12px 0"><a class="outline-btn" href="https://wa.me/918128502373" aria-label="Contact Savli Industrial Services on WhatsApp">Message us on WhatsApp</a></p></div>
+   <form class="enquiry-form" action="submit-enquiry.php" method="post">
+    <input type="hidden" name="csrf_token" value="">
+    <div class="hp-field" aria-hidden="true"><label for="website">Leave this field empty</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+    <label for="name">Your name <span aria-hidden="true">*</span></label><input id="name" name="name" required maxlength="100" autocomplete="name">
+    <label for="phone">Phone number <span aria-hidden="true">*</span></label><input id="phone" name="phone" required maxlength="20" inputmode="tel" autocomplete="tel">
+    <label for="email">Email (optional)</label><input id="email" name="email" type="email" maxlength="190" autocomplete="email">
+    <label for="service">Service required</label><select id="service" name="service"><option value="">Choose a service</option><option>Aluminium & Glass</option><option>Plumbing</option><option>Electrical</option><option>Civil Work</option><option>Interior Designing</option><option>Fabrication</option><option>ACP & Cladding</option><option>Maintenance</option><option>Painting & POP</option><option>Other</option></select>
+    <label for="message">Project details <span aria-hidden="true">*</span></label><textarea id="message" name="message" required maxlength="3000" rows="4"></textarea><button class="quote-btn form-submit" type="submit">Send Enquiry →</button><p class="form-note">Your details will be used only to respond to this enquiry.</p>
+   </form>
+  </div>
+ </section>
+</main>
+
+<footer>
+ <div class="container footer">
+  <div><strong style="color:white">Savli Industrial Services</strong><br><span>INDUSTRIAL · CONSTRUCTION · INTERIORS</span></div>
+  <div>Home &nbsp;|&nbsp; About &nbsp;|&nbsp; Services &nbsp;|&nbsp; Work &nbsp;|&nbsp; Projects &nbsp;|&nbsp; Contact</div>
+  <div class="social"><span>f</span><span>◎</span><span>▶</span><span>in</span></div>
+ </div>
+</footer>
+<a class="whatsapp" href="https://wa.me/918128502373" aria-label="WhatsApp">◔</a>
+</body>
+</html>
